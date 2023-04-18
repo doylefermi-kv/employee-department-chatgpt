@@ -1,0 +1,41 @@
+{
+  "compilerOptions": {
+    // Specify the target ECMAScript version for the compiled code
+    "target": "ES2018",
+
+    // Specify the module system to use for the compiled code
+    "module": "commonjs",
+
+    // Enable strict type checking for the project
+    "strict": true,
+
+    // Enable interop with CommonJS modules
+    "esModuleInterop": true,
+
+    // Enable experimental decorators for the project
+    "experimentalDecorators": true,
+
+    // Emit decorator metadata for the project
+    "emitDecoratorMetadata": true,
+
+    // Generate source maps for the compiled code
+    "sourceMap": true,
+
+    // Specify the output directory for the compiled code
+    "outDir": "dist",
+
+    // Specify the base URL for module resolution
+    "baseUrl": ".",
+
+    // Specify module resolution paths
+    "paths": {
+      "*": ["node_modules/*", "src/*"]
+    }
+  },
+
+  // Specify which files should be included in compilation
+  "include": ["src/**/*.ts"],
+
+  // Specify which files should be excluded from compilation
+  "exclude": ["node_modules", "**/*.spec.ts"]
+}
