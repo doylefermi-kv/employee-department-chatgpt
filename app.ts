@@ -4,6 +4,7 @@ import createDatabaseConnection from './config/database';
 import { EmployeeRoutes } from './routes/employee.routes';
 import { departmentRoutes } from './routes/department.routes';
 import { loginRouter } from './routes/login.routes';
+import logger from './utils/logger';
 
 dotenv.config();
 
@@ -14,14 +15,14 @@ app.use(express.urlencoded({ extended: true }));
 
 createDatabaseConnection()
   .then(() => {
-    console.log('Connected to database');
+    logger.info('Connected to database');
   })
-  .catch((error) => console.log('TypeORM connection error: ', error));
+  .catch((error) => logger.error('TypeORM connection error: ', error));
 
 app.use('/employees', EmployeeRoutes);
 app.use('/departments', departmentRoutes);
 app.use('/login', loginRouter);
 
 app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  logger.info(`Server running at http://localhost:${port}`);
 });

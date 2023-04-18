@@ -1,4 +1,5 @@
 import { createConnection, Connection } from 'typeorm';
+import logger from '../utils/logger';
 
 const createDatabaseConnection = async (): Promise<Connection> => {
   try {
@@ -12,10 +13,10 @@ const createDatabaseConnection = async (): Promise<Connection> => {
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       synchronize: true,
     });
-    console.log('Database connection established');
+    logger.info('Database connection established');
     return connection;
   } catch (error) {
-    console.log('Database connection error:', error);
+    logger.error('Database connection error:', error);
     throw error;
   }
 };
