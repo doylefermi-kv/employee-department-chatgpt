@@ -5,7 +5,11 @@ import { CreateEmployeeDto } from '../dto/create-employee.dto';
 const saltRounds = 10;
 
 export class LoginController {
-  private employeeService = new EmployeeService();
+  private employeeService: EmployeeService;
+
+  constructor(employeeService: EmployeeService) {
+    this.employeeService = employeeService;
+  }
 
   async signup(req: Request, res: Response) {
     const employeeDto: CreateEmployeeDto = req.body;

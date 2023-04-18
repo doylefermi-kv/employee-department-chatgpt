@@ -1,13 +1,17 @@
-import express, { Router } from 'express';
+import { Router } from 'express';
+import { EmployeeRepository } from '../repositories/employee.repository';
+import { EmployeeService } from '../services/employee.service';
 import { LoginController } from '../controllers/login.controller';
 
 export class LoginRoutes {
   private router: Router;
-  private loginController: LoginController;
+  private readonly loginController: LoginController;
 
   constructor() {
-    this.router = express.Router();
-    this.loginController = new LoginController();
+    this.loginController = new LoginController(
+      new EmployeeService(new EmployeeRepository())
+    );
+    this.router = Router();
     this.initializeRoutes();
   }
 

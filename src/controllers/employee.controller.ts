@@ -6,10 +6,10 @@ import { plainToClass } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 
 export class EmployeeController {
-  private employeeService: EmployeeService;
+  private readonly employeeService: EmployeeService;
 
-  constructor() {
-    this.employeeService = new EmployeeService();
+  constructor(employeeService: EmployeeService) {
+    this.employeeService = employeeService;
   }
 
   async getAllEmployees(req: Request, res: Response) {

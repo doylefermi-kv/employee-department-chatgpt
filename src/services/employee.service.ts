@@ -11,10 +11,10 @@ import { sign } from 'jsonwebtoken';
 
 
 export class EmployeeService {
-  private employeeRepository: EmployeeRepository;
+  private readonly employeeRepository: EmployeeRepository;
 
-  constructor() {
-    this.employeeRepository = new EmployeeRepository();
+  constructor(employeeRepository: EmployeeRepository) {
+    this.employeeRepository = employeeRepository;
   }
 
   async getAllEmployees(): Promise<Employee[]> {
