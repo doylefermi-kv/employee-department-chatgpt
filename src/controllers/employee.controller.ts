@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { EmployeeService } from '../services/employee.service';
-import { CreateEmployeeDto } from '../dtos/create-employee.dto';
-import { EditEmployeeDto } from '../dtos/edit-employee.dto';
+import { CreateEmployeeDto } from '../dto/create-employee.dto';
+import { EditEmployeeDto } from '../dto/edit-employee.dto';
 import { plainToClass } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 
@@ -18,7 +18,7 @@ export class EmployeeController {
   }
 
   async getEmployeeById(req: Request, res: Response) {
-    const id = parseInt(req.params.id, 10);
+    const id = req.params.id;
     const employee = await this.employeeService.getEmployeeById(id);
     if (employee) {
       return res.status(200).json({ data: employee });
@@ -40,7 +40,7 @@ export class EmployeeController {
   }
 
   async updateEmployee(req: Request, res: Response) {
-    const id = parseInt(req.params.id, 10);
+    const id = req.params.id;
     const dto = plainToClass(EditEmployeeDto, { id, ...req.body });
     try {
       await validateOrReject(dto);
@@ -57,12 +57,8 @@ export class EmployeeController {
   }
 
   async deleteEmployee(req: Request, res: Response) {
-    const id = parseInt(req.params.id, 10);
+    const id = req.params.id;
     const employee = await this.employeeService.deleteEmployee(id);
-    if (employee) {
-      return res.status(200).json({ data: employee });
-    } else {
-      return res.status(404).json({ message: 'Employee not found' });
-    }
+    return res.status(204).json({ data: employee });
   }
 }

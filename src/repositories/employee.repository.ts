@@ -51,4 +51,13 @@ export class EmployeeRepository {
     const existingEmployee = await this.findOneById(id);
     await this.repository.remove(existingEmployee);
   }
+
+  async findByName(name: string): Promise<Employee | undefined> {
+    const employees = await this.repository.findOne({
+      where: {
+        name,
+      },
+    });
+    return employees;
+  }
 }

@@ -4,10 +4,10 @@ import { CreateDepartmentDto } from '../dto/create-department.dto';
 import { EditDepartmentDto } from '../dto/edit-department.dto';
 
 export class DepartmentController {
-  private departmentService: DepartmentService;
+  private readonly departmentService: DepartmentService;
 
-  constructor() {
-    this.departmentService = new DepartmentService();
+  constructor(departmentService: DepartmentService) {
+    this.departmentService = departmentService;
   }
 
   public async getAllDepartments(req: Request, res: Response): Promise<void> {

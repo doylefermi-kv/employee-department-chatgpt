@@ -5,31 +5,31 @@ import { Department } from './department.entity';
 @Entity()
 export class Employee {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  experience: number;
+  password!: string;
 
   @Column()
-  joiningDate: Date;
+  experience!: number;
 
   @Column()
-  role: string;
+  joiningDate!: Date;
 
   @Column()
-  status: string;
+  role!: string;
 
   @Column()
-  address: string;
+  status!: string;
 
   @ManyToMany(() => Department)
   @JoinTable()
-  departments: Department[];
+  departments?: Department[];
 
   @OneToOne(() => Address, { cascade: true })
   @JoinColumn()
-  address: Address;
+  address?: Address;
 }

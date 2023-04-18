@@ -3,21 +3,21 @@ import { IsString, IsNotEmpty } from 'class-validator';
 export class AddressDto {
   @IsNotEmpty()
   @IsString()
-  addressLine1: string;
+  addressLine1!: string;
 
   @IsNotEmpty()
   @IsString()
-  addressLine2: string;
+  addressLine2!: string;
 
   @IsNotEmpty()
   @IsString()
-  district: string;
+  district!: string;
 
   @IsNotEmpty()
   @IsString()
-  state: string;
+  state!: string;
 
   @IsNotEmpty()
   @IsString()
-  country: string;
+  country!: string;
 }

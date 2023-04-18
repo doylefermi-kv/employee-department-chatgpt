@@ -4,10 +4,10 @@ export class CreateDepartmentDto {
 
     @IsNotEmpty()
     @IsString()
-    departmentName: string;
+    departmentName!: string;
 
     @IsNotEmpty()
     @IsString()
-    status: string;
+    status!: string;
 
 }

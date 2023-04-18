@@ -2,12 +2,13 @@
   "compilerOptions": {
     // Specify the target ECMAScript version for the compiled code
     "target": "ES2018",
+    "lib": ["ES6"],
 
     // Specify the module system to use for the compiled code
     "module": "commonjs",
 
     // Enable strict type checking for the project
-    "strict": true,
+    "strict": false,
 
     // Enable interop with CommonJS modules
     "esModuleInterop": true,

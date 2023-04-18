@@ -4,15 +4,15 @@ import { Employee } from './employee.entity';
 @Entity()
 export class Department {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @Column()
-  status: string;
+  status!: string;
 
   @ManyToMany(() => Employee)
   @JoinTable()
-  employees: Employee[];
+  employees?: Employee[];
 }
