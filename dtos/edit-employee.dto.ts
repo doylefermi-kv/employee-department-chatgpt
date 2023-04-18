@@ -1,4 +1,5 @@
 import { IsString, IsNumber, IsDateString, IsNotEmpty } from 'class-validator';
+import { AddressDto } from './address.dto';
 
 export class EditEmployeeDto {
   @IsNotEmpty()
@@ -18,8 +19,7 @@ export class EditEmployeeDto {
   joiningDate: Date;
 
   @IsNotEmpty()
-  @IsString()
-  department: string;
+  departments: Department[];
 
   @IsNotEmpty()
   @IsString()
@@ -30,6 +30,7 @@ export class EditEmployeeDto {
   status: string;
 
   @IsNotEmpty()
-  @IsString()
-  address: string;
+  @ValidateNested()
+  @Type(() => AddressDto)
+  address: AddressDto;
 }

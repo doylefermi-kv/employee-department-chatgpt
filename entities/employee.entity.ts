@@ -1,10 +1,11 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, JoinColumn, OneToOne } from 'typeorm';
+import { Address } from './address.entity';
 import { Department } from './department.entity';
 
 @Entity()
 export class Employee {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   name: string;
@@ -24,7 +25,11 @@ export class Employee {
   @Column()
   address: string;
 
-  @OneToOne(() => Department, (department) => department.employee)
+  @ManyToMany(() => Department)
+  @JoinTable()
+  departments: Department[];
+
+  @OneToOne(() => Address, { cascade: true })
   @JoinColumn()
-  department: Department;
+  address: Address;
 }

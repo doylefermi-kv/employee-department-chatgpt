@@ -1,10 +1,10 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
 import { Employee } from './employee.entity';
 
 @Entity()
 export class Department {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   @Column()
   name: string;
@@ -12,6 +12,7 @@ export class Department {
   @Column()
   status: string;
 
-  @OneToOne(() => Employee, (employee) => employee.department)
-  employee: Employee;
+  @ManyToMany(() => Employee)
+  @JoinTable()
+  employees: Employee[];
 }

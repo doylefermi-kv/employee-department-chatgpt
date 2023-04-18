@@ -1,4 +1,7 @@
-import { IsString, IsNumber, IsDateString, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsDateString, IsNotEmpty, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import { AddressDto } from './address.dto';
+import { Department } from '../entities/department.entity';
 
 export class CreateEmployeeDto {
   @IsNotEmpty()
@@ -15,10 +18,6 @@ export class CreateEmployeeDto {
 
   @IsNotEmpty()
   @IsString()
-  department: string;
-
-  @IsNotEmpty()
-  @IsString()
   role: string;
 
   @IsNotEmpty()
@@ -26,6 +25,10 @@ export class CreateEmployeeDto {
   status: string;
 
   @IsNotEmpty()
-  @IsString()
-  address: string;
+  @ValidateNested()
+  @Type(() => AddressDto)
+  address: AddressDto;
+
+  @IsNotEmpty()
+  departments: Department[];
 }
