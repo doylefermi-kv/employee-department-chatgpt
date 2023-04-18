@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import createDatabaseConnection from './config/database';
 import { EmployeeRoutes } from './routes/employee.routes';
 import { departmentRoutes } from './routes/department.routes';
+import { loginRouter } from './routes/login.routes';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ createDatabaseConnection()
 
 app.use('/employees', EmployeeRoutes);
 app.use('/departments', departmentRoutes);
+app.use('/login', loginRouter);
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
