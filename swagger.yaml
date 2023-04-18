@@ -1,0 +1,165 @@
+openapi: 3.0.0
+info:
+  title: Employee API
+  description: API for managing employees
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /employees:
+    get:
+      summary: Get all employees
+      operationId: getAllEmployees
+      responses:
+        '200':
+          description: A list of employees
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Employee'
+        '500':
+          description: Internal server error
+    post:
+      summary: Create a new employee
+      operationId: createEmployee
+      requestBody:
+        description: Employee object to be created
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateEmployeeDto'
+      responses:
+        '201':
+          description: The newly created employee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          description: Invalid input
+        '500':
+          description: Internal server error
+  /employees/{id}:
+    get:
+      summary: Get an employee by ID
+      operationId: getEmployeeById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the employee to get
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The requested employee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '404':
+          description: Employee not found
+        '500':
+          description: Internal server error
+    put:
+      summary: Update an employee by ID
+      operationId: updateEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the employee to update
+          schema:
+            type: string
+      requestBody:
+        description: Employee object to be updated
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditEmployeeDto'
+      responses:
+        '200':
+          description: The updated employee
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Employee'
+        '400':
+          description: Invalid input
+        '404':
+          description: Employee not found
+        '500':
+          description: Internal server error
+    delete:
+      summary: Delete an employee by ID
+      operationId: deleteEmployee
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the employee to delete
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Employee deleted successfully
+        '404':
+          description: Employee not found
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    Address:
+      type: object
+      properties:
+        street:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        zip:
+          type: string
+    Department:
+      type: object
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+    CreateEmployeeDto:
+      type: object
+      properties:
+        name:
+          type: string
+        password:
+          type: string
+        experience:
+          type: number
+        joiningDate:
+          type: string
+          format: date-time
+        role:
+          type: string
+        status:
+          type: string
+        address:
+          $ref: '#/components/schemas/AddressDto'
+        departments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Department'
+      required:
+        - name
+        - password
+        - experience
+        - joiningDate
+        - role
+        - status
+        - address
+

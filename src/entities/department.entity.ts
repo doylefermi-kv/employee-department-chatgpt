@@ -11,8 +11,4 @@ export class Department {
 
   @Column()
   status!: string;
-
-  @ManyToMany(() => Employee)
-  @JoinTable()
-  employees?: Employee[];
 }

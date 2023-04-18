@@ -35,7 +35,7 @@
   },
 
   // Specify which files should be included in compilation
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "migrations/**/*.ts"],
 
   // Specify which files should be excluded from compilation
   "exclude": ["node_modules", "**/*.spec.ts"]

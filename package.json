@@ -8,9 +8,9 @@
     "dev": "nodemon src/server.ts",
     "build": "tsc",
     "typeorm": "ts-node ./node_modules/typeorm/cli.js",
-    "migration:generate": "npm run typeorm -- migration:generate -n",
-    "migration:run": "npm run typeorm -- migration:run",
-    "migration:revert": "npm run typeorm -- migration:revert"
+    "migration:generate": "npm run build && npm run typeorm -- migration:generate -f dist/migrations/config/ormConfig.js -n",
+    "migration:run": "npm run build && npm run typeorm -- migration:run -f dist/migrations/config/ormConfig.js",
+    "migration:revert": "npm run build && npm run typeorm -- migration:revert -f dist/migrations/config/ormConfig.js"
   },
   "keywords": [
     "typescript",
