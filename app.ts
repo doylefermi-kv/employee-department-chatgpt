@@ -1,6 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { createConnection } from 'typeorm';
+import createDatabaseConnection from './config/database';
 import { EmployeeRoutes } from './routes/employee.routes';
 import { departmentRoutes } from './routes/department.routes';
 
@@ -11,7 +11,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: true }));
 
-createConnection()
+createDatabaseConnection()
   .then(() => {
     console.log('Connected to database');
   })
