@@ -17,15 +17,10 @@ services:
   app:
     build:
       context: .
+    env_file:
+      - .env
     environment:
-      NODE_ENV: ${NODE_ENV}
-      PORT: ${PORT}
-      JWT_SECRET: ${JWT_SECRET}
       DB_HOST: db  # This should be the service name of the db container
-      DB_PORT: ${DB_PORT}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      DB_NAME: ${DB_NAME}
     ports:
       - "${PORT}:${PORT}"
     depends_on:
