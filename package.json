@@ -32,7 +32,9 @@
     "lodash": "^4.17.21",
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.34"
+    "swagger-ui-express": "^4.6.2",
+    "typeorm": "^0.2.34",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^3.0.0",

@@ -6,6 +6,8 @@ import { LoginRoutes } from './routes/login.routes';
 import logger from './utils/logger';
 import { errorHandler } from './middleware/error-handler.middleware';
 import cors from 'cors';
+import swaggerUi from 'swagger-ui-express';
+import yaml from 'yamljs';
 
 dotenv.config();
 
@@ -17,6 +19,7 @@ export class App {
     this.initializeMiddlewares();
     this.initializeRoutes();
     this.initializeErrorHandling();
+    this.initializeSwagger();
     this.startServer();
   }
 
@@ -44,6 +47,16 @@ export class App {
 
   private initializeErrorHandling() {
     this.app.use(errorHandler);
+  }
+
+  private initializeSwagger() {
+    const swaggerDocument = yaml.load('./swagger.yaml');
+
+    this.app.use(
+      '/api-docs',
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument)
+    );
   }
 
   private startServer() {
