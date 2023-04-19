@@ -23,6 +23,13 @@ export class App {
   private initializeMiddlewares() {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
+
+    // Add CORS middleware
+    this.app.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*');
+      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+      next();
+    });
   }
 
   private initializeRoutes() {
