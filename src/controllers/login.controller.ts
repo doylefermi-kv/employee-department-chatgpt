@@ -2,8 +2,6 @@ import { Request, Response } from 'express';
 import { EmployeeService } from '../services/employee.service';
 import { CreateEmployeeDto } from '../dto/create-employee.dto';
 
-const saltRounds = 10;
-
 export class LoginController {
   private employeeService: EmployeeService;
 
