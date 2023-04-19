@@ -5,6 +5,7 @@ import { EmployeeRoutes } from './routes/employee.routes';
 import { DepartmentRoutes } from './routes/department.routes';
 import { LoginRoutes } from './routes/login.routes';
 import logger from './utils/logger';
+import { errorHandler } from './middleware/error-handler.middleware';
 
 dotenv.config();
 
@@ -15,6 +16,7 @@ export class App {
   constructor() {
     this.initializeMiddlewares();
     this.initializeRoutes();
+    this.initializeErrorHandling();
     this.startServer();
   }
 
@@ -27,6 +29,10 @@ export class App {
     this.app.use('/employees', new EmployeeRoutes().getRouter());
     this.app.use('/departments', new DepartmentRoutes().getRouter());
     this.app.use('/login', new LoginRoutes().getRouter());
+  }
+
+  private initializeErrorHandling() {
+    this.app.use(errorHandler);
   }
 
   private startServer() {

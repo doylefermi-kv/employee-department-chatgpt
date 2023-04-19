@@ -19,9 +19,6 @@ export class EmployeeRepository {
     const employee = await this.repository.findOne(id, {
       relations: ['departments'],
     });
-    if (!employee) {
-      throw new Error(`Employee with id ${id} does not exist`);
-    }
     return employee;
   }
 

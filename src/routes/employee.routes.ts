@@ -20,10 +20,34 @@ export class EmployeeRoutes {
 
   public async routes() {
     this.router.get('/', authenticate, (req, res) => this.employeeController.getAllEmployees(req, res));
-    this.router.post('/', authenticate, validateDto(CreateEmployeeDto), (req, res) => this.employeeController.createEmployee(req, res));
-    this.router.get('/:id', authenticate, (req, res) => this.employeeController.getEmployeeById(req, res));
-    this.router.put('/:id', authenticate, validateDto(EditEmployeeDto), (req, res) => this.employeeController.updateEmployee(req, res));
-    this.router.delete('/:id', authenticate, (req, res) => this.employeeController.deleteEmployee(req, res));
+    this.router.post('/', authenticate, validateDto(CreateEmployeeDto), (req, res, next) => {
+      try {
+        this.employeeController.createEmployee(req, res, next);
+      } catch (error) {
+        next(error);
+      }
+    });
+    this.router.get('/:id', authenticate, (req, res, next) => {
+      try {
+        this.employeeController.getEmployeeById(req, res, next);
+      } catch (error) {
+        next(error);
+      }
+    });
+    this.router.put('/:id', authenticate, validateDto(EditEmployeeDto), (req, res, next) => {
+      try {
+        this.employeeController.updateEmployee(req, res, next);
+      } catch (error) {
+        next(error);
+      }
+    });
+    this.router.delete('/:id', authenticate, (req, res, next) => {
+      try {
+        this.employeeController.deleteEmployee(req, res, next);
+      } catch (error) {
+        next(error);
+      }
+    });
   }
 
   public getRouter() {

@@ -7,6 +7,7 @@ import { Department } from "../entities/department.entity";
 import { compare, hash } from "bcrypt";
 import { LoginDto } from "../dto/login.dto";
 import { sign } from 'jsonwebtoken';
+import { HTTPException } from "../middleware/error-handler.middleware";
 
 
 export class EmployeeService {
@@ -23,7 +24,7 @@ export class EmployeeService {
   async getEmployeeById(id: string): Promise<Employee> {
     const employee = await this.employeeRepository.findOneById(id);
     if (!employee) {
-      throw new Error(`Employee with id ${id} does not exist.`);
+      throw new HTTPException(404, 'Employee not found');
     }
     return employee;
   }
@@ -64,7 +65,7 @@ export class EmployeeService {
     const existingEmployee = await this.employeeRepository.findOneById(id);
   
     if (!existingEmployee) {
-      throw new Error(`Employee with id ${id} does not exist.`);
+      throw new HTTPException(404, 'Employee not found');
     }
   
     const { name, experience, joiningDate, departments, role, status, address } = employeeDto;
@@ -84,7 +85,7 @@ export class EmployeeService {
   async deleteEmployee(id: string): Promise<void> {
     const existingEmployee = await this.employeeRepository.findOneById(id);
     if (!existingEmployee) {
-      throw new Error(`Employee with id ${id} does not exist.`);
+      throw new HTTPException(404, 'Employee not found');
     }
     await this.employeeRepository.delete(id);
   }
@@ -94,13 +95,13 @@ export class EmployeeService {
     const employee = await this.employeeRepository.findByName(name);
 
     if (!employee) {
-      throw new Error('Invalid credentials');
+      throw new HTTPException(401, 'Invalid user');
     }
 
     const isPasswordValid = await compare(password, employee.password);
 
     if (!isPasswordValid) {
-      throw new Error('Invalid credentials');
+      throw new HTTPException(401, 'Invalid password');
     }
 
     const accessTokenExpirationTime = process.env.JWT_ACCESS_EXPIRATION_MINUTES || '30';
