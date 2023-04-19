@@ -1,11 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import createDatabaseConnection from './config/database';
 import { EmployeeRoutes } from './routes/employee.routes';
 import { DepartmentRoutes } from './routes/department.routes';
 import { LoginRoutes } from './routes/login.routes';
 import logger from './utils/logger';
 import { errorHandler } from './middleware/error-handler.middleware';
+import cors from 'cors';
 
 dotenv.config();
 
@@ -24,12 +24,16 @@ export class App {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
 
+    const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(',') || [`http://localhost:${this.port}`];
+
     // Add CORS middleware
-    this.app.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-      next();
-    });
+    this.app.use(cors(
+      {
+        origin: allowedOrigins,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        credentials: true
+      }
+    ));
   }
 
   private initializeRoutes() {
