@@ -12,26 +12,26 @@ export class DepartmentController {
 
   public async getAllDepartments(req: Request, res: Response): Promise<void> {
     const departments = await this.departmentService.getAllDepartments();
-    res.status(200).json(departments);
+    res.status(200).json({ data: departments });
   }
 
   public async getDepartmentById(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     const department = await this.departmentService.getDepartmentById(id);
-    res.status(200).json(department);
+    res.status(200).json({ data: department });
   }
 
   public async createDepartment(req: Request, res: Response): Promise<void> {
     const createDepartmentDto: CreateDepartmentDto = req.body;
     const newDepartment = await this.departmentService.createDepartment(createDepartmentDto);
-    res.status(201).json(newDepartment);
+    res.status(201).json({ data: newDepartment });
   }
 
   public async updateDepartment(req: Request, res: Response): Promise<void> {
     const { id } = req.params;
     const editDepartmentDto: EditDepartmentDto = req.body;
     const updatedDepartment = await this.departmentService.updateDepartment(id, editDepartmentDto);
-    res.status(200).json(updatedDepartment);
+    res.status(200).json({ data: updatedDepartment });
   }
 
   public async deleteDepartment(req: Request, res: Response): Promise<void> {

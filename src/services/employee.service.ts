@@ -4,8 +4,7 @@ import { CreateEmployeeDto } from "../dto/create-employee.dto";
 import { EditEmployeeDto } from "../dto/edit-employee.dto";
 import { Address } from "../entities/address.entity";
 import { Department } from "../entities/department.entity";
-import { compare } from "bcrypt";
-import { omit } from 'lodash';
+import { compare, hash } from "bcrypt";
 import { LoginDto } from "../dto/login.dto";
 import { sign } from 'jsonwebtoken';
 
@@ -31,10 +30,12 @@ export class EmployeeService {
 
   async createEmployee(employeeDto: CreateEmployeeDto): Promise<Employee> {
     const { name, password, experience, joiningDate, role, status, address, departments } = employeeDto;
+
+    const hashedPassword = await hash(password, 10);
   
     const employee = new Employee();
     employee.name = name;
-    employee.password = password;
+    employee.password = hashedPassword;
     employee.experience = experience;
     employee.joiningDate = joiningDate;
     employee.role = role;

@@ -16,8 +16,7 @@ export class LoginRoutes {
   }
 
   private initializeRoutes(): void {
-    this.router.post('/signup', this.loginController.signup);
-    this.router.post('/signin', this.loginController.login);
+    this.router.post('/signin', (req,res) => this.loginController.login(req, res));
   }
 
   public getRouter(): Router {

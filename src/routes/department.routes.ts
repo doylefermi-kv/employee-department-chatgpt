@@ -4,7 +4,8 @@ import { DepartmentService } from '../services/department.service';
 import { DepartmentRepository } from '../repositories/department.repository';
 import { validateDto } from '../middleware/validate.dto';
 import { CreateDepartmentDto } from '../dto/create-department.dto';
-import { EditDepartmentDto } from 'dto/edit-department.dto';
+import { EditDepartmentDto } from '../dto/edit-department.dto';
+import { authenticate } from '../middleware/authentication';
 
 export class DepartmentRoutes {
   private router: Router = Router();
@@ -22,10 +23,10 @@ export class DepartmentRoutes {
   }
 
   private routes(): void {
-    this.router.get('/', (req, res) => this.departmentController.getAllDepartments(req, res));
-    this.router.get('/:id', (req, res) => this.departmentController.getDepartmentById(req, res));
-    this.router.post('/', validateDto(CreateDepartmentDto), (req, res) => this.departmentController.createDepartment(req, res));
-    this.router.put('/:id', validateDto(EditDepartmentDto), (req, res) => this.departmentController.updateDepartment(req, res));
-    this.router.delete('/:id', (req, res) => this.departmentController.deleteDepartment(req, res));
+    this.router.get('/', authenticate, (req, res) => this.departmentController.getAllDepartments(req, res));
+    this.router.get('/:id', authenticate, (req, res) => this.departmentController.getDepartmentById(req, res));
+    this.router.post('/', authenticate, validateDto(CreateDepartmentDto), (req, res) => this.departmentController.createDepartment(req, res));
+    this.router.put('/:id', authenticate, validateDto(EditDepartmentDto), (req, res) => this.departmentController.updateDepartment(req, res));
+    this.router.delete('/:id', authenticate, (req, res) => this.departmentController.deleteDepartment(req, res));
   }
 }

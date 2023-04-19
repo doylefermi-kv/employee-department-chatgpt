@@ -14,16 +14,16 @@ export class LoginController {
   async signup(req: Request, res: Response) {
     const employeeDto: CreateEmployeeDto = req.body;
     const createdEmployee = await this.employeeService.createEmployee(employeeDto);
-    return res.json(createdEmployee);
+    return res.json({ data: createdEmployee });
   }
 
 
   async login(req: Request, res: Response) {
     const { name, password } = req.body;
-    const token = await this.employeeService.login({name, password});
-    if (!token) {
+    const credentials = await this.employeeService.login({name, password});
+    if (!credentials) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-    return res.json({ token });
+    return res.json({ data: { token: credentials } });
   }
 }

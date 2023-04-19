@@ -20,7 +20,7 @@ export class DepartmentService {
 
   async createDepartment(departmentDto: CreateDepartmentDto): Promise<Department> {
     const department = new Department();
-    department.name = departmentDto.departmentName;
+    department.name = departmentDto.name;
     department.status = departmentDto.status;
 
     return this.departmentRepository.createDepartment(department);
@@ -32,7 +32,7 @@ export class DepartmentService {
       throw new Error(`Department with id ${id} not found`);
     }
 
-    department.name = departmentDto.departmentName;
+    department.name = departmentDto.name;
     department.status = departmentDto.status;
 
     return this.departmentRepository.updateDepartment(id, department);
