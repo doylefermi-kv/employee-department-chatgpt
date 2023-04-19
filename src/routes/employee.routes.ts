@@ -20,7 +20,7 @@ export class EmployeeRoutes {
 
   public async routes() {
     this.router.get('/', authenticate, (req, res) => this.employeeController.getAllEmployees(req, res));
-    this.router.post('/', authenticate, validateDto(CreateEmployeeDto), (req, res, next) => {
+    this.router.post('/', validateDto(CreateEmployeeDto), (req, res, next) => {
       try {
         this.employeeController.createEmployee(req, res, next);
       } catch (error) {
