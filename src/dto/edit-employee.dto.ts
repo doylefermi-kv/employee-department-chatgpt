@@ -1,11 +1,11 @@
-import { IsString, IsNumber, IsDateString, IsNotEmpty, IsUUID, ValidateNested } from 'class-validator';
+import { IsString, IsNumber, IsDateString, IsNotEmpty, ValidateNested, IsOptional, IsNumberString } from 'class-validator';
 import { Type } from 'class-transformer';
 import { AddressDto } from './address.dto';
 import { Department } from '../entities/department.entity';
 
 export class EditEmployeeDto {
   @IsNotEmpty()
-  @IsUUID()
+  @IsNumberString()
   id!: string;
 
   @IsNotEmpty()
@@ -20,7 +20,7 @@ export class EditEmployeeDto {
   @IsDateString()
   joiningDate!: Date;
 
-  @IsNotEmpty()
+  @IsOptional()
   departments!: Department[];
 
   @IsNotEmpty()

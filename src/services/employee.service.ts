@@ -30,10 +30,11 @@ export class EmployeeService {
   }
 
   async createEmployee(employeeDto: CreateEmployeeDto): Promise<Employee> {
-    const { name, experience, joiningDate, role, status, address, departments } = employeeDto;
+    const { name, password, experience, joiningDate, role, status, address, departments } = employeeDto;
   
     const employee = new Employee();
     employee.name = name;
+    employee.password = password;
     employee.experience = experience;
     employee.joiningDate = joiningDate;
     employee.role = role;

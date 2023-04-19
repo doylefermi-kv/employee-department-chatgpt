@@ -9,7 +9,7 @@ export class EmployeeRepository {
   }
 
   async findAll(): Promise<Employee[]> {
-    return await this.repository.find({ relations: ['department'] });
+    return await this.repository.find({ relations: ['departments'] });
   }
 
   async findOneById(id: string): Promise<Employee> {
@@ -17,7 +17,7 @@ export class EmployeeRepository {
       throw new Error('Employee id is required');
     }
     const employee = await this.repository.findOne(id, {
-      relations: ['department'],
+      relations: ['departments'],
     });
     if (!employee) {
       throw new Error(`Employee with id ${id} does not exist`);

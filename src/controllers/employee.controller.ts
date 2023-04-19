@@ -6,7 +6,7 @@ import { plainToClass } from 'class-transformer';
 import { validateOrReject } from 'class-validator';
 
 export class EmployeeController {
-  private readonly employeeService: EmployeeService;
+  private employeeService: EmployeeService;
 
   constructor(employeeService: EmployeeService) {
     this.employeeService = employeeService;
