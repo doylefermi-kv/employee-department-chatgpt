@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application files
 COPY . .
 
+# Build the app
+RUN npm run build
+
 ENV NODE_ENV=$NODE_ENV
 ENV PORT=$PORT
 
