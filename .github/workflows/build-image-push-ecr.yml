@@ -37,7 +37,7 @@ jobs:
         # Docker image tag
         IMAGE_TAG: latest
       run: |
-        docker build -t $ECR_REGISTRY/my-app:$IMAGE_TAG .
-        docker tag $ECR_REGISTRY/my-app:$IMAGE_TAG $ECR_REGISTRY/my-app:$GITHUB_SHA
-        docker push $ECR_REGISTRY/my-app:$IMAGE_TAG
-        docker push $ECR_REGISTRY/my-app:$GITHUB_SHA
+        docker build -t $ECR_REGISTRY:$IMAGE_TAG .
+        docker tag $ECR_REGISTRY:$IMAGE_TAG $ECR_REGISTRY:$GITHUB_SHA
+        docker push $ECR_REGISTRY:$IMAGE_TAG
+        docker push $ECR_REGISTRY:$GITHUB_SHA
