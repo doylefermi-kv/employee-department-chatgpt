@@ -107,7 +107,7 @@ export class EmployeeService {
     const accessTokenExpirationTime = process.env.JWT_ACCESS_EXPIRATION_MINUTES || '30';
     const refreshTokenExpirationTime = process.env.JWT_REFRESH_EXPIRATION_DAYS || '30';
 
-    const accessToken = sign({ id: employee.id }, process.env.JWT_SECRET || '', {
+    const accessToken = sign({ id: employee.id, role: employee.role }, process.env.JWT_SECRET || '', {
       expiresIn: `${accessTokenExpirationTime}m`,
     });
 

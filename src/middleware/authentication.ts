@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import logger from '../utils/logger';
 
-export const authenticate = (req: any /*FIXME*/, res: Response, next: NextFunction) => {
+export const authenticate = (allowedRoles?: string[]) => (req: any /*FIXME*/, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -21,6 +21,11 @@ export const authenticate = (req: any /*FIXME*/, res: Response, next: NextFuncti
 
     if (!payload) {
       throw new Error('Invalid token');
+    }
+
+    // Check if user has the allowed role
+    if (allowedRoles && allowedRoles?.length > 0 && !allowedRoles.includes(payload.role)) {
+      throw new Error('User does not have the required role');
     }
 
     req.userId = payload.id;
