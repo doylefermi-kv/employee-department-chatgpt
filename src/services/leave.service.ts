@@ -1,16 +1,31 @@
-import { getRepository, LessThanOrEqual, MoreThanOrEqual, Not } from 'typeorm';
+import { Repository, getRepository } from 'typeorm';
 import { Employee } from '../entities/employee.entity';
 import { Leave } from '../entities/leave.entity';
 import { LeaveType } from '../entities/leaveType.entity';
+import { HTTPException } from '../middleware/error-handler.middleware';
+import { LeaveRepository } from 'repositories/leave.repository';
+import { EmployeeRepository } from 'repositories/employee.repository';
+import { EmployeeService } from './employee.service';
 
 export class LeaveService {
-  private leaveRepository = getRepository(Leave);
-  private employeeRepository = getRepository(Employee);
-  private leaveTypeRepository = getRepository(LeaveType);
+  private leaveRepository: LeaveRepository;
+  private employeeService: EmployeeService;
+  private leaveTypeRepository: Repository<LeaveType>;
+
+  constructor(
+    leaveRepository: LeaveRepository,
+    employeeService: EmployeeService,
+    leaveTypeRepository: Repository<LeaveType>,
+  ) {
+    this.leaveRepository = leaveRepository;
+    this.employeeService = employeeService;
+    this.leaveTypeRepository = leaveTypeRepository;
+  }
+
 
   async markLeave(employeeId: number, leaveTypeId: number, startDate: Date, endDate: Date): Promise<Leave> {
     // check if the employee exists
-    const employee = await this.employeeRepository.findOne(employeeId);
+    const employee = await this.employeeService.getEmployeeById(String(employeeId));
     if (!employee) {
       throw new Error(`Employee with id ${employeeId} not found`);
     }
@@ -30,34 +45,13 @@ export class LeaveService {
     }
 
     // check if the leave request overlaps with existing leaves
-    const overlappingLeaves = await this.leaveRepository.find({
-      where: {
-        employee: {
-          id: employeeId,
-        },
-        status: Not('Cancelled'),
-        startDate: LessThanOrEqual(endDate),
-        endDate: MoreThanOrEqual(startDate),
-      },
-    });
+    const overlappingLeaves = await this.leaveRepository.getOverlappingLeavesOfEmployee(employeeId, startDate, endDate);
     if (overlappingLeaves.length > 0) {
       throw new Error('Leave request overlaps with existing leaves');
     }
 
     // check if the leave request exceeds the maximum allowed limit
-    const leavesTaken = await this.leaveRepository.count({
-      where: {
-        employee: {
-          id: employeeId,
-        },
-        leaveType: {
-          id: leaveTypeId,
-        },
-        status: 'APPROVED',
-        startDate: MoreThanOrEqual(new Date(currentYear, 0, 1)),
-        endDate: LessThanOrEqual(new Date(currentYear, 11, 31)),
-      },
-    });
+    const leavesTaken = await this.leaveRepository.getApprovedLeaveCountInCurrentYear(employeeId, leaveTypeId, currentYear)
     const remainingDays = leaveType.maxDays - leavesTaken;
     if (remainingDays <= 0) {
       throw new Error(`Leave request exceeds the maximum allowed limit of ${leaveType.maxDays} days for leave type '${leaveType.name}'`);
@@ -70,27 +64,26 @@ export class LeaveService {
     leave.employee = employee;
     leave.leaveType = leaveType;
     leave.status = 'APPROVED';
-    return this.leaveRepository.save(leave);
+    return this.leaveRepository.createLeave(leave);
   }
 
   async cancelLeave(leaveId: number): Promise<void> {
-    const leave = await this.leaveRepository.findOneOrFail(leaveId);
-    leave.status = 'Cancelled';
-    await this.leaveRepository.save(leave);
-  }
+    const leaveRepository = getRepository(Leave);
+    try {
+      const leave = await this.leaveRepository.getLeaveById(leaveId);
+      leave.status = 'Cancelled';
+      await leaveRepository.save(leave);
+    } catch (err) {
+      throw new HTTPException(404, 'Leave not found');
+    }
+  };
 
   async getLeavesByEmployee(employeeId: number): Promise<Leave[]> {
-    return this.leaveRepository.find({
-      where: {
-        employee: {
-          id: employeeId,
-        },
-      },
-    });
+    return this.leaveRepository.getLeavesByEmployee(employeeId);
   }
 
   async getAllLeaves(): Promise<Leave[]> {
-    return this.leaveRepository.find();
+    return this.leaveRepository.getAllLeaves();
   }
 
   async configureMaxLeaves(leaveTypeId: number, maxDays: number): Promise<LeaveType> {
@@ -99,15 +92,10 @@ export class LeaveService {
     return this.leaveTypeRepository.save(leaveType);
   }
 
-  async getRemainingLeaves(employeeId: number): Promise<{ leaveType: LeaveType; remainingDays: number }[]> {
-    const employee = await this.employeeRepository.findOneOrFail(employeeId, {
-      relations: ['leaves', 'leaves.leaveType'],
-    });
+  async getRemainingLeaves(employeeId: number): Promise<{ leaveType: number; remainingDays: number }[]> {
     const leaveTypes = await this.leaveTypeRepository.find();
-    return leaveTypes.map((leaveType) => {
-      const leavesTaken = employee.leaves.filter((leave) => leave.leaveType.id === leaveType.id);
-      const remainingDays = leaveType.maxDays - leavesTaken.length;
-      return { leaveType, remainingDays };
-    });
+
+    const remainingLeaves = await this.leaveRepository.getRemainingLeaves(employeeId, leaveTypes);
+    return remainingLeaves;   
   }
 }
