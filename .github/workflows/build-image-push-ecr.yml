@@ -1,0 +1,42 @@
+# Name of the GitHub Action
+name: Build and Push Docker Image to ECR
+
+# Define when to trigger this action, in this case, on push to the master branch
+on:
+  push:
+    branches:
+      - master
+
+# Define the job that will be run by this GitHub Action
+jobs:
+  build-and-push:
+    # Specify the environment to run the job in, in this case, Ubuntu latest
+    runs-on: ubuntu-latest
+    # Define the steps to be run as part of this job
+    steps:
+      # Checkout the repository code to the environment
+    - name: Checkout
+      uses: actions/checkout@v2
+      # Configure AWS credentials using AWS access key ID and secret access key stored in secrets
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+      # Login to Amazon ECR
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+      # Build the Docker image, tag it, and push it to ECR
+    - name: Build and Push Docker Image
+      env:
+        # ECR registry URL stored in GitHub secrets
+        ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+        # Docker image tag
+        IMAGE_TAG: latest
+      run: |
+        docker build -t $ECR_REGISTRY:$IMAGE_TAG .
+        docker tag $ECR_REGISTRY:$IMAGE_TAG $ECR_REGISTRY:$GITHUB_SHA
+        docker push $ECR_REGISTRY:$IMAGE_TAG
+        docker push $ECR_REGISTRY:$GITHUB_SHA
