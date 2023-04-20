@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, JoinColumn, OneToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, JoinColumn, OneToOne, OneToMany } from 'typeorm';
 import { Address } from './address.entity';
 import { Department } from './department.entity';
+import { Leave } from './leave.entity';
 
 @Entity()
 export class Employee {
@@ -32,4 +33,7 @@ export class Employee {
   @OneToOne(() => Address, { cascade: true })
   @JoinColumn()
   address?: Address;
+
+  @OneToMany(() => Leave, (leave) => leave.employee)
+  leaves?: Leave[];
 }
