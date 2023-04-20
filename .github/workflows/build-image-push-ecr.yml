@@ -1,12 +1,11 @@
 # Name of the GitHub Action
 name: Build and Push Docker Image to ECR
 
-# Define when to trigger this action, in this case, on push to the master or feat/github-action-ecr-image-push branch
+# Define when to trigger this action, in this case, on push to the master branch
 on:
   push:
     branches:
       - master
-      - feat/github-action-ecr-image-push
 
 # Define the job that will be run by this GitHub Action
 jobs:
