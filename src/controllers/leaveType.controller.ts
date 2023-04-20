@@ -13,7 +13,7 @@ export class LeaveTypeController {
         try {
             const { id } = req.params;
             const leaveType = await this.leaveTypeService.getLeaveTypeById(Number(id));
-            res.json(leaveType);
+            res.json({ data: leaveType});
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
@@ -22,7 +22,7 @@ export class LeaveTypeController {
     public getAllLeaveTypes = async (req: Request, res: Response, next: NextFunction) => {
         try {
             const leaveTypes = await this.leaveTypeService.getLeaveTypes();
-            res.json(leaveTypes);
+            res.json({ data: leaveTypes });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
@@ -32,7 +32,7 @@ export class LeaveTypeController {
         try {
             const leaveTypeDto = req.body as ConfigureLeaveTypeDto;
             const createdLeaveType = await this.leaveTypeService.createLeaveType(leaveTypeDto.name, leaveTypeDto.maxDays);
-            res.status(201).json(createdLeaveType);
+            res.status(201).json({ data: createdLeaveType });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
@@ -43,7 +43,7 @@ export class LeaveTypeController {
             const { id } = req.params;
             const leaveTypeDto = req.body as ConfigureLeaveTypeDto;
             const updatedLeaveType = await this.leaveTypeService.updateLeaveType(Number(id), leaveTypeDto.name, leaveTypeDto.maxDays);
-            res.json(updatedLeaveType);
+            res.json({ data: updatedLeaveType });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
