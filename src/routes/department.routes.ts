@@ -23,10 +23,10 @@ export class DepartmentRoutes {
   }
 
   private routes(): void {
-    this.router.get('/', authenticate, (req, res) => this.departmentController.getAllDepartments(req, res));
-    this.router.get('/:id', authenticate, (req, res) => this.departmentController.getDepartmentById(req, res));
-    this.router.post('/', authenticate, validateDto(CreateDepartmentDto), (req, res) => this.departmentController.createDepartment(req, res));
-    this.router.put('/:id', authenticate, validateDto(EditDepartmentDto), (req, res) => this.departmentController.updateDepartment(req, res));
-    this.router.delete('/:id', authenticate, (req, res) => this.departmentController.deleteDepartment(req, res));
+    this.router.get('/', authenticate(), (req, res) => this.departmentController.getAllDepartments(req, res));
+    this.router.get('/:id', authenticate(), (req, res) => this.departmentController.getDepartmentById(req, res));
+    this.router.post('/', authenticate(), validateDto(CreateDepartmentDto), (req, res) => this.departmentController.createDepartment(req, res));
+    this.router.put('/:id', authenticate(), validateDto(EditDepartmentDto), (req, res) => this.departmentController.updateDepartment(req, res));
+    this.router.delete('/:id', authenticate(), (req, res) => this.departmentController.deleteDepartment(req, res));
   }
 }

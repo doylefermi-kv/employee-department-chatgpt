@@ -18,35 +18,35 @@ export class LeaveTypeRoutes {
   }
 
   public async routes() {
-    this.router.get('/', authenticate, (req, res, next) => {
+    this.router.get('/', authenticate(), (req, res, next) => {
       try {
         this.leaveTypeController.getAllLeaveTypes(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.get('/:id', authenticate, (req, res, next) => {
+    this.router.get('/:id', authenticate(["ADMIN"]), (req, res, next) => {
       try {
         this.leaveTypeController.getLeaveTypeById(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.post('/', authenticate, validateDto(ConfigureLeaveTypeDto), (req, res, next) => {
+    this.router.post('/', authenticate(["ADMIN"]), validateDto(ConfigureLeaveTypeDto), (req, res, next) => {
       try {
         this.leaveTypeController.createLeaveType(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.put('/:id', authenticate, validateDto(ConfigureLeaveTypeDto), (req, res, next) => {
+    this.router.put('/:id', authenticate(["ADMIN"]), validateDto(ConfigureLeaveTypeDto), (req, res, next) => {
       try {
         this.leaveTypeController.updateLeaveType(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.delete('/:id', authenticate, (req, res, next) => {
+    this.router.delete('/:id', authenticate(["ADMIN"]), (req, res, next) => {
       try {
         this.leaveTypeController.deleteLeaveType(req, res, next);
       } catch (error) {
