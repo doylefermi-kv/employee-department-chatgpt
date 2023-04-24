@@ -10,9 +10,14 @@ export class LeaveController {
     this.leaveService = leaveService;
   }
 
-  public markLeave = async (req: Request, res: Response, next: NextFunction) => {
+  public markLeave = async (req: any, res: Response, next: NextFunction) => {
     try {
-      const { employeeId, leaveTypeId, startDate, endDate } = req.body;
+      let { employeeId, leaveTypeId, startDate, endDate } = req.body;
+      // TODO: Allow only admins to mark leaves for employees
+      if(!employeeId) {
+        // If the employeeId is not provided, then the leave is marked for the logged in user.
+        employeeId = req.userId;
+      }
       const leave = await this.leaveService.markLeave(employeeId, leaveTypeId, startDate, endDate);
       res.status(201).json(leave);
     } catch (error) {

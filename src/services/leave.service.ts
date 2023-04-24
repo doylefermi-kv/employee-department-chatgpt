@@ -38,8 +38,12 @@ export class LeaveService {
 
     // check if the leave request is in the current year
     const currentYear = new Date().getFullYear();
-    const startYear = startDate.getFullYear();
-    const endYear = endDate.getFullYear();
+    const startDateObj = new Date(startDate);
+    const endDateObj = new Date(endDate);
+
+    const startYear = startDateObj.getFullYear();
+    const endYear = endDateObj.getFullYear();
+
     if (startYear !== currentYear || endYear !== currentYear) {
       throw new Error('Leave request should be within the current year');
     }
