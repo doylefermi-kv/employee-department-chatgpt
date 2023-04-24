@@ -1,11 +1,14 @@
-import { LeaveController } from 'controllers/leave.controller';
-import { LeaveType } from 'entities/leaveType.entity';
+import { LeaveController } from '../controllers/leave.controller';
+import { LeaveType } from '../entities/leaveType.entity';
 import { Router } from 'express';
-import { EmployeeRepository } from 'repositories/employee.repository';
-import { LeaveRepository } from 'repositories/leave.repository';
-import { EmployeeService } from 'services/employee.service';
-import { LeaveService } from 'services/leave.service';
+import { EmployeeRepository } from '../repositories/employee.repository';
+import { LeaveRepository } from '../repositories/leave.repository';
+import { EmployeeService } from '../services/employee.service';
+import { LeaveService } from '../services/leave.service';
 import { getRepository } from 'typeorm';
+import { validateDto } from '../middleware/validate.dto';
+import { MarkLeaveDto } from '../dto/mark-leave.dto';
+import { authenticate } from '../middleware/authentication';
 
 
 export class LeaveRoutes {
@@ -20,35 +23,35 @@ export class LeaveRoutes {
   }
 
   private routes(): void {
-    this.router.post('/leave', async (req, res, next) => {
+    this.router.post('/', authenticate, validateDto(MarkLeaveDto), async (req, res, next) => {
       try {
         await this.leaveController.markLeave(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.delete('/leave/:leaveId', async (req, res, next) => {
+    this.router.delete('/:leaveId', async (req, res, next) => {
       try {
         await this.leaveController.cancelLeave(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.get('/leave/:employeeId', async (req, res, next) => {
+    this.router.get('/:employeeId', async (req, res, next) => {
       try {
         await this.leaveController.getLeavesByEmployee(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.get('/leave', async (req, res, next) => {
+    this.router.get('/', async (req, res, next) => {
       try {
         await this.leaveController.getAllLeaves(req, res, next);
       } catch (error) {
         next(error);
       }
     });
-    this.router.get('/leave/remaining/:employeeId', async (req, res, next) => {
+    this.router.get('/remaining/:employeeId', async (req, res, next) => {
       try {
         await this.leaveController.getRemainingLeaves(req, res, next);
       } catch (error) {
