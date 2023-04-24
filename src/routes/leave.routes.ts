@@ -51,7 +51,7 @@ export class LeaveRoutes {
         next(error);
       }
     });
-    this.router.get('/remaining/:employeeId', async (req, res, next) => {
+    this.router.get('/remaining/:employeeId', authenticate, async (req, res, next) => {
       try {
         await this.leaveController.getRemainingLeaves(req, res, next);
       } catch (error) {

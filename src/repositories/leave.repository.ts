@@ -38,7 +38,7 @@ export class LeaveRepository {
       .select("leave.leaveTypeId", "leaveType")
       .addSelect("COUNT(*)", "count")
       .where("leave.employeeId = :employeeId", { employeeId })
-      .andWhere("leave.status = :status", { status: "Approved" })
+      .andWhere("leave.status = :status", { status: "APPROVED" })
       .groupBy("leave.leaveTypeId")
       .getRawMany<{ leaveType: number; count: string }>();
 

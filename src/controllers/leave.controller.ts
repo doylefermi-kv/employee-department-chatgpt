@@ -54,9 +54,14 @@ export class LeaveController {
     }
   };
 
-  public getRemainingLeaves = async (req: Request, res: Response, next: NextFunction) => {
+  public getRemainingLeaves = async (req: any, res: Response, next: NextFunction) => {
     try {
-      const { employeeId } = req.params;
+      let { employeeId } = req.params;
+
+      if(!employeeId || employeeId !== req.userId) {
+        // If the employeeId is not provided, then the remaining leaves of the logged in user is returned.
+        employeeId = req.userId;
+      }
       const remainingLeaves = await this.leaveService.getRemainingLeaves(Number(employeeId));
       res.json(remainingLeaves);
     } catch (error) {
