@@ -7,6 +7,7 @@ import logger from './utils/logger';
 import { errorHandler } from './middleware/error-handler.middleware';
 import cors from 'cors';
 import { LeaveTypeRoutes } from './routes/leaveType.routes';
+import { HealthRouter } from './routes/health.router';
 
 dotenv.config();
 
@@ -42,6 +43,8 @@ export class App {
     this.app.use('/departments', new DepartmentRoutes().getRouter());
     this.app.use('/login', new LoginRoutes().getRouter());
     this.app.use('/leave-type', new LeaveTypeRoutes().getRouter());
+
+    this.app.use('/health', new HealthRouter().getRouter());
   }
 
   private initializeErrorHandling() {
