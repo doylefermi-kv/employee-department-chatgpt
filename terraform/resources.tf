@@ -36,23 +36,6 @@ module "vpc" {
   flow_log_traffic_type     = "ALL"
 }
 
-
-# Create ECS cluster in private subnet using EC2 instances
-resource "aws_ecs_cluster" "kirmani_cluster" {
-  name = "kirmani-cluster"
-
-  setting {
-    name  = "containerInsights"
-    value = "enabled"
-  }
-
-  tags = {
-    created-by = "chatgpt"
-    Name       = local.name
-  }
-
-}
-
 # Create a PostgreSQL RDS instance
 resource "aws_db_instance" "postgres_rds" {
   allocated_storage      = 20
@@ -133,6 +116,20 @@ resource "aws_security_group" "aws_pvt_security_group" {
     protocol    = "udp"
     cidr_blocks = [module.vpc.vpc_cidr_block]
   }
+  egress {
+  from_port   = 0
+  to_port     = 65535
+  protocol    = "tcp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
+egress {
+  from_port   = 0
+  to_port     = 65535
+  protocol    = "udp"
+  cidr_blocks = ["0.0.0.0/0"]
+}
+
 
   tags = {
     created-by = "chatgpt"
@@ -193,4 +190,48 @@ resource "aws_security_group_rule" "postgres_sg_ingress" {
   depends_on = [
     aws_security_group.aws_pvt_security_group
   ]
+}
+
+resource "aws_instance" "bastion" {
+  ami           = "ami-02eb7a4783e7e9317"
+  instance_type = "t2.micro"
+  key_name      = "chatgpt-poc"
+  subnet_id     = module.vpc.public_subnets[0]
+  
+  vpc_security_group_ids = [aws_security_group.bastion_sg.id]
+  
+  tags = {
+    Name = "bastion"
+  }
+  
+  # Associate a public IP address with the instance
+  associate_public_ip_address = true
+}
+
+resource "aws_security_group" "bastion_sg" {
+  name_prefix = "bastion-sg-"
+  
+  # Allow inbound SSH traffic from all IP addresses
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  # Allow outbound traffic to the internet
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  # Associate the security group with the VPC created using the terraform-aws-modules/vpc/aws module
+  vpc_id = module.vpc.vpc_id
+  
+  # Add tags to the security group
+  tags = {
+    Name = "bastion-sg"
+  }
 }
