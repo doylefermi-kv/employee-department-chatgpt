@@ -12,7 +12,7 @@ export class EmployeeRepository {
     return await this.repository.find({ relations: ['departments'] });
   }
 
-  async findOneById(id: string): Promise<Employee> {
+  async findOneById(id: string): Promise<Employee | undefined> {
     if (!id) {
       throw new Error('Employee id is required');
     }

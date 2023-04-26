@@ -21,7 +21,7 @@ export class EditEmployeeDto {
   joiningDate!: Date;
 
   @IsOptional()
-  departments!: Department[];
+  departments?: Department[];
 
   @IsNotEmpty()
   @IsString()

@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import logger from '../utils/logger';
+import { HTTPException } from './error-handler.middleware';
 
 export const authenticate = (allowedRoles?: string[]) => (req: any /*FIXME*/, res: Response, next: NextFunction) => {
   try {
@@ -31,7 +32,7 @@ export const authenticate = (allowedRoles?: string[]) => (req: any /*FIXME*/, re
     req.userId = payload.id;
     next();
   } catch (error) {
-    logger.error(error);
-    res.status(401).json({ message: 'Unauthorized' });
+    logger.error(error.message);
+    next(new HTTPException(401, 'Unauthorized'));
   }
 };
