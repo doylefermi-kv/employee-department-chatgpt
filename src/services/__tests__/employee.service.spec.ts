@@ -1,4 +1,3 @@
-import { createConnection, getConnection } from 'typeorm';
 import { CreateEmployeeDto } from '../../dto/create-employee.dto';
 import { EditEmployeeDto } from '../../dto/edit-employee.dto';
 import { Employee } from '../../entities/employee.entity';

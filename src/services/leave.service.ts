@@ -1,21 +1,20 @@
-import { Repository, getRepository } from 'typeorm';
-import { Employee } from '../entities/employee.entity';
+import { getRepository } from 'typeorm';
 import { Leave } from '../entities/leave.entity';
 import { LeaveType } from '../entities/leaveType.entity';
 import { HTTPException } from '../middleware/error-handler.middleware';
 import { LeaveRepository } from 'repositories/leave.repository';
-import { EmployeeRepository } from 'repositories/employee.repository';
 import { EmployeeService } from './employee.service';
+import { LeaveTypeRepository } from 'repositories/leaveType.repository';
 
 export class LeaveService {
   private leaveRepository: LeaveRepository;
   private employeeService: EmployeeService;
-  private leaveTypeRepository: Repository<LeaveType>;
+  private leaveTypeRepository: LeaveTypeRepository;
 
   constructor(
     leaveRepository: LeaveRepository,
     employeeService: EmployeeService,
-    leaveTypeRepository: Repository<LeaveType>,
+    leaveTypeRepository: LeaveTypeRepository,
   ) {
     this.leaveRepository = leaveRepository;
     this.employeeService = employeeService;

@@ -5,6 +5,7 @@ const config = {
   username: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  debugger: true,
   entities: ['dist/src/**/*.entity{.ts,.js}'],
   migrations: ["dist/migrations/*.js"],
   synchronize: false,

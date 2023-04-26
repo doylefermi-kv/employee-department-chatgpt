@@ -16,6 +16,14 @@ export class LeaveTypeRepository {
     return this.repository.find();
   }
 
+  async findOne(id: number): Promise<LeaveType> {
+    return this.repository.findOne(id);
+  }
+
+  async update(leaveType: LeaveType): Promise<any> {
+    return this.repository.update(leaveType.id, { name: leaveType.name, maxDays: leaveType.maxDays });
+  }
+
   async findOneOrFail(id: number): Promise<LeaveType> {
     return this.repository.findOneOrFail(id);
   }

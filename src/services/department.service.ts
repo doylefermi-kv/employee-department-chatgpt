@@ -4,7 +4,10 @@ import { EditDepartmentDto } from '../dto/edit-department.dto';
 import { DepartmentRepository } from '../repositories/department.repository';
 
 export class DepartmentService {
-  constructor(private readonly departmentRepository: DepartmentRepository) {}
+  private readonly departmentRepository: DepartmentRepository;
+  constructor(departmentRepository: DepartmentRepository) {
+    this.departmentRepository = departmentRepository;
+  }
 
   async getAllDepartments(): Promise<Department[]> {
     return this.departmentRepository.getAllDepartments();

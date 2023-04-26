@@ -1,14 +1,13 @@
 import { LeaveController } from '../controllers/leave.controller';
-import { LeaveType } from '../entities/leaveType.entity';
 import { Router } from 'express';
 import { EmployeeRepository } from '../repositories/employee.repository';
 import { LeaveRepository } from '../repositories/leave.repository';
 import { EmployeeService } from '../services/employee.service';
 import { LeaveService } from '../services/leave.service';
-import { getRepository } from 'typeorm';
 import { validateDto } from '../middleware/validate.dto';
 import { MarkLeaveDto } from '../dto/mark-leave.dto';
 import { authenticate } from '../middleware/authentication';
+import { LeaveTypeRepository } from '../repositories/leaveType.repository';
 
 
 export class LeaveRoutes {
@@ -18,7 +17,7 @@ export class LeaveRoutes {
   constructor() {
     this.router = Router();
     this.leaveController = new LeaveController(
-        new LeaveService(new LeaveRepository(), new EmployeeService(new EmployeeRepository()), getRepository(LeaveType)))
+        new LeaveService(new LeaveRepository(), new EmployeeService(new EmployeeRepository()), new LeaveTypeRepository()))
     this.routes();
   }
 
