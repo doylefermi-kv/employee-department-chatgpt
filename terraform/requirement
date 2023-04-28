@@ -1,0 +1,36 @@
+Write a terraform code in modular structure to create AWS infrastructure.
+
+- the region should be ap-south-1 
+- provider should be in a separate file named provider.tf the state backend should be in s3 names kirmani-state-backup.
+- resources should be created via calling modules from a file named resources.tf
+- The modules should be generic.  the names should be passed in to the module from resources.tf. use aws terraform modules
+- define the name kirmani as local in the resources.tf file.
+- the resources needed are, a vpc named kirmani which has 2 public and private subnets and necessery components 
+- enable flow log for this vpc, create the flow log bucket as well, destination for flow log is an s3 bucket
+- Give values via variables and values.tf
+- A ecs cluster named "kirmani-cluster" should also be created in the private subnet.
+- A postgres RDS should be created with db.t3.large instance type in the private subnet, create a subnet group in private network.
+
+---
+
+add tag to all resources as created-by: chatgpt
+Create a security group for the ECS cluster instances
+Write a private security group that only allows inbound from vpc ip's and attach same to all resources in private subnet like ecs and rds
+make security group name as aws_pvt_security_group
+
+
+
+vpc flow logs took some time.
+
+----------
+can you help me write service, task definition and all required  dependencies in following ecs cluster
+the cluster is not FARGATE
+add "aws_iam_role" "ecs_task_execution_role"
+create "aws_lb_target_group" "kirmani_target_group"
+create "aws_lb" "kirmani_lb"
+resource "aws_security_group" "kirmani_lb_sg" 
+The vpc object does not have an attribute named "public_subnets_ids".
+The vpc object does not have an attribute named "private_subnets_ids".
+
+Queries to create a user then user need to create a DB named employee_db
+
